@@ -1,47 +1,66 @@
 // console.log("Checking js");
 const displayLocalStorage = () => {
-    const cart 
-}
-
+  const cart = getCart();
+  for (const name in cart) {
+    displayProduct(name);
+  }
+};
 
 const addItem = () => {
-    const nameField = document.getElementById('product-name');
-    const name = nameField.value;
-    if (!name) {
-        return;
-    }
-    //display in the ul
-    
-}
+  const nameField = document.getElementById("product-name");
+  const name = nameField.value;
+  if (!name) {
+    return;
+  }
+  //display in the ul
 
+  displayProduct(name);
 
-const displayProduct = name => {
-    const ul = document.getElementById('products');
-    const li = document.createElement('li');
-    li.innerText = name;
-    ul.appendChild(li);
-}
+  //add to local storage
+
+  addProductToCart(name);
+
+  //clear
+
+  nameField.value = "";
+};
+
+const displayProduct = (name) => {
+  const ul = document.getElementById("products");
+  const li = document.createElement("li");
+  li.innerText = name;
+  ul.appendChild(li);
+};
 
 const getCart = () => {
-    const cart = localStorage.getItem('cart');
-    let cartObj;
+  const cart = localStorage.getItem("cart");
+  let cartObj;
 
-    if (cart) {  //aga thaka sava kora thaka
-        cartObj = JSON.parse(cart);
-    } else {
-        cartObj = [];
-    }
-    return cartObj;
-}
+  if (cart) {
+    //aga thaka sava kora thaka
+    cartObj = JSON.parse(cart);
+  } else {
+    cartObj = [];
+  }
+  return cartObj;
+};
 
-const addProductToCart = name => {
-    console.log(name);
-    const cart = getCart;
+const addProductToCart = (name) => {
+  console.log(name);
+  const cart = getCart();
 
+  if (cart[name]) {
+    cart[name] = cart[name] + 1;
+  } else {
+    cart[name] = 1;
+  }
+  const cartStringified = JSON.stringify(cart);
+  localStorage.setItem("cart", cartStringified);
+};
 
-    if (cart[name]) {
-        cart[name] = cart[name] + 1;
-    } else {
-        cart[name] = 1;
-    }
-}
+const placeOrder = () => {
+  document.getElementById("products").textContent = "";
+  localStorage.removeItem("cart");
+};
+
+displayLocalStorage(); //call here directly
